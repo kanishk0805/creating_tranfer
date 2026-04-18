@@ -52,6 +52,8 @@ accountsRouter.post("/transfer", authorization, async (req, res) => {
         res.json({ message: "Transfer successful" });
     } catch (err) { 
         console.error("Error processing transfer:", err);
+        await session.abortTransaction();
+        session.endSession();
         res.status(500).json({ message: "Error processing transfer" });
     }
 });
