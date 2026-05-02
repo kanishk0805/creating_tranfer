@@ -24,12 +24,13 @@ const updateSchema = zod.object({
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 
             "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character").optional()
 });
+
 userRouter.get("/test",async (req, res) => {
     res.json({ message: "API is working!" });
 });
 
 userRouter.post("/register", async (req, res) => {
-    
+    console.log("Received registration request with body:", req.body);
     const {success, error} = registerSchema.safeParse(req.body);
     console.log("Validation result:", { success, error });
     if(!success){
