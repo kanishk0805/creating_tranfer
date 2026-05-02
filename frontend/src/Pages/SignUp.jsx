@@ -54,6 +54,8 @@ export default function Signin() {
                         if(data.token){
                             alert("User created successfully");
                             localStorage.setItem("token", data.token);
+                            localStorage.setItem("username", data.user.firstname+ " " + data.user.lastname);
+                            localStorage.setItem("email", data.user.email);
                             Navigate("/Dashboard");
                         }else{
                             alert(data.message || "Something went wrong in storing the token");

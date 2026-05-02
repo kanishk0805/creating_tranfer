@@ -12,7 +12,7 @@ export default function Appbar() {
             </div>
             <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
                 <div className="flex flex-col justify-center h-full text-xl">
-                    U
+                    {localStorage.getItem("username") ? localStorage.getItem("username").charAt(0) : "U"}
                 </div>
             </div>
         </div>
