@@ -37,7 +37,11 @@ userRouter.post("/register", async (req, res) => {
         return res.status(411).json({ message: error.errors.map(e => e.message).join(", ") });
     }
 
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+        return res.status(411).json({ message: "Passwords do not match" });
+    }
+
     console.log("User registration request received with data:", req.body);
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
     if(await User.findOne({ email })) {
