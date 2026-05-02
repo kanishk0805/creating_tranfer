@@ -59,7 +59,8 @@ userRouter.post("/register", async (req, res) => {
     }
     
     console.log("User created:", user);
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "3h" });
+    res.json({ token, user: { firstname: user.firstname, lastname: user.lastname, email: user.email } });
     res.status(201).json({ token });
 });
  
@@ -80,7 +81,19 @@ userRouter.put("/", authorization, async (req, res) => {
     } 
     res.json({ message: "User updated successfully" }); 
 });
-
+userRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(401).json({ message: "Invalid email or password" });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid email or password" });
+    }
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "3h" });
+    res.json({ token, user: { firstname: user.firstname, lastname: user.lastname, email: user.email } });
+});
 userRouter.get("/bulk",authorization, async (req, res) => {
     let filter = req.query.filter || ""; 
 
