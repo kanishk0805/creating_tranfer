@@ -30,7 +30,7 @@ userRouter.get("/test",async (req, res) => {
 });
 
 userRouter.post("/register", async (req, res) => {
-    
+    console.log("Received registration request with body:", req.body);
     const {success, error} = registerSchema.safeParse(req.body);
     console.log("Validation result:", { success, error });
     if(!success){

@@ -5,6 +5,9 @@ import Button from "../components/Button";
 import { Link, Navigate } from "react-router-dom";
 import { BottomWarning } from "../components/BottomWaring";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
+
 export default function Signin() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -32,6 +35,7 @@ export default function Signin() {
                         alert("Passwords do not match");
                         return;
                     }
+                    console.log(firstName, lastName, email, password, confirmPassword);
                     // Make API call to sign up the user
                     fetch(`${import.meta.env.VITE_API_URL}/user/register`, {
                         method: "POST",
@@ -39,25 +43,29 @@ export default function Signin() {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            firstName,
-                            lastName,
+                            firstname: firstName,
+                            lastname: lastName,
                             email,
-                            password
+                            password,
+                            confirmPassword
                         })
                     }).then(res => res.json()).then(data => {
-                        if(data.success){
+                        console.log(data);
+                        if(data.token){
                             alert("User created successfully");
-                            Navigate("/signin");
+                            localStorage.setItem("token", data.token);
+                            Navigate("/Dashboard");
                         }else{
-                            alert(data.message || "Something went wrong");
+                            alert(data.message || "Something went wrong in storing the token");
                         }
                     }).catch(err => {
                         console.log(err);
+                        alert(err.message || "Something went wrong in signing up");
                     });
                 }catch(err){
                     console.log(err);
                 }
-            }
+            } 
         }/>
         <BottomWarning label="Already have an account?" buttonText="Sign In" to="/signin" />
     </div>
