@@ -1,5 +1,5 @@
 import React from "react";
-
+import Button from "./Button";
 export default function Appbar() {
     return (
         <div className="shadow h-14 flex justify-between">
@@ -14,6 +14,13 @@ export default function Appbar() {
                 <div className="flex flex-col justify-center h-full text-xl">
                     {localStorage.getItem("username") ? localStorage.getItem("username").charAt(0) : "U"}
                 </div>
+            </div>
+            <div>
+                <Button label={"Logout"} onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("username");
+                    window.location.href = "/signin";
+                }} />
             </div>
         </div>
     </div>

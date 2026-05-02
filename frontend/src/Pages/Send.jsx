@@ -5,6 +5,9 @@ import { useSearchParams } from "react-router-dom";
 import { use } from "react";
 
 export default function Send(){
+    if(localStorage.getItem("token") == null) {
+        return <Navigate to="/signin" />
+    }
    const [searchParams] = useSearchParams();
     const recipientEmail = searchParams.get("recipient");
     const recipientName = searchParams.get("name");

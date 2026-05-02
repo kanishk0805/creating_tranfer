@@ -3,10 +3,13 @@ import Subheading from "../components/Subheading";
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import { BottomWarning } from "../components/BottomWaring";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
 export default function Signin() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const Navigate = useNavigate();
   return <div className="bg-slate-300 h-screen flex justify-center"> 
      <div className="flex flex-col justify-center items-center">
          <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4">
@@ -31,7 +34,7 @@ export default function Signin() {
                     }).then(res => res.json()).then(data => {
                         console.log(data);
                         if(data.token){
-                            alert("User created successfully");
+                            alert("User Logged in successfully");
                             localStorage.setItem("token", data.token);
                             localStorage.setItem("username", data.user.firstname+ " " + data.user.lastname);
                             localStorage.setItem("email", data.user.email);
