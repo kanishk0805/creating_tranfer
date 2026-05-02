@@ -24,6 +24,7 @@ const updateSchema = zod.object({
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 
             "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character").optional()
 });
+
 userRouter.get("/test",async (req, res) => {
     res.json({ message: "API is working!" });
 });
