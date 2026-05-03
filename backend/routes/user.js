@@ -30,9 +30,7 @@ userRouter.get("/test",async (req, res) => {
 });
 
 userRouter.post("/register", async (req, res) => {
-    console.log("Received registration request with body:", req.body);
     const {success, error} = registerSchema.safeParse(req.body);
-    console.log("Validation result:", { success, error });
     if(!success){
         console.error("Validation error:", error);
         return res.status(411).json({ message: error.errors.map(e => e.message).join(", ") });
@@ -43,7 +41,6 @@ userRouter.post("/register", async (req, res) => {
         return res.status(411).json({ message: "Passwords do not match" });
     }
 
-    console.log("User registration request received with data:", req.body);
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
     if(await User.findOne({ email })) {
         return res.status(411).json({ message: "User already exists" });
@@ -57,8 +54,6 @@ userRouter.post("/register", async (req, res) => {
         console.error("Error creating user:", err);
         return res.status(500).json({ message: "Error creating user" });
     }
-    
-    console.log("User created:", user);
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "3h" });
     res.json({ token, user: { firstname: user.firstname, lastname: user.lastname, email: user.email } });
     res.status(201).json({ token });
